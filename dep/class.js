@@ -23,9 +23,25 @@
     var callSuper = function (method) {
         var me = this;
         return function () {
-            me.superClass.prototype[method].apply(me, arguments);
+            var superMethod = me.superClass.prototype[method];
+            if (superMethod) {
+                superMethod.apply(me, arguments);
+            }
         };
-    }
+    };
+    /**
+     * 获取父类中的存在name的最近的父亲的方法
+     */
+    var getSuperMethod = function (parentClass, name) {
+        while (parentClass) {
+            var pMethod = parentClass.prototype[name];
+            if (!pMethod) {
+                return getSuperMethod(parentClass.prototype.superClass);
+            } else {
+                return pMethod;
+            }
+        }
+    };
     /**
      * 类实例化对象的方法
      * @private param {object} options 实例化对象时的配置参数
@@ -103,13 +119,8 @@
                             if (!override) {
                                 var pMethod;
                                 if (parent) {
-                                    pMethod = parent.prototype[name];
-                                    if (!pMethod) {
-                                        parent = parent.superClass;
-                                        if (parent) {
-                                            parent.prototype[name].apply(this, arguments);
-                                        }
-                                    } else {
+                                    pMethod = getSuperMethod(parent, name);
+                                    if (pMethod) {
                                         pMethod.apply(this, arguments);
                                     }
                                 }

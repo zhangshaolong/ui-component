@@ -21,7 +21,7 @@
         }
     });
     require(['widgets/pager/pager'], function (Pager) {
-        var pager = new Pager({
+        var pager = Pager.init({
             element: '.pager-container'
         });
         pager.on('page', function (args) {
