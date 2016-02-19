@@ -18,12 +18,12 @@
      */
     var noop = function () {};
     /**
-     * 获取父类的方法
+     * 获取有此方法的最近父类中的方法
      */
     var callSuper = function (method) {
         var me = this;
         return function () {
-            var superMethod = me.superClass.prototype[method];
+            var superMethod = getClosestSuperMethod(me.superClass, method);
             if (superMethod) {
                 superMethod.apply(me, arguments);
             }
@@ -32,11 +32,11 @@
     /**
      * 获取父类中的存在name的最近的父亲的方法
      */
-    var getSuperMethod = function (parentClass, name) {
+    var getClosestSuperMethod = function (parentClass, name) {
         while (parentClass) {
             var pMethod = parentClass.prototype[name];
             if (!pMethod) {
-                return getSuperMethod(parentClass.prototype.superClass);
+                return getClosestSuperMethod(parentClass.prototype.superClass);
             } else {
                 return pMethod;
             }
@@ -79,15 +79,6 @@
             }
             methods = methods || {};
             var F = function () {
-                // if (parent) {
-                //     var p = parent;
-                //     while (p) {
-                //          if (p.prototype.init) {
-                //             p.prototype.init.apply(this, arguments);
-                //          }
-                //         p = p.prototype.superClass;
-                //     }
-                // }
                 for (var key in F.defaultOptions || {}) {
                     if (!this[key]) {
                         this[key] = F.defaultOptions[key];
@@ -113,7 +104,7 @@
                             if (!override) {
                                 var pMethod;
                                 if (parent) {
-                                    pMethod = getSuperMethod(parent, name);
+                                    pMethod = getClosestSuperMethod(parent, name);
                                     if (pMethod) {
                                         pMethod.apply(this, arguments);
                                     }
