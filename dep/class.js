@@ -100,12 +100,6 @@
                 F.prototype = new noop();
                 noop.prototype = null;
             }
-            F.prototype.init = function (options) {
-                options = options || {};
-                for(var p in options) {
-                    this[p] = options[p];
-                }
-            };
             for (var name in methods) {
                 if (methods.hasOwnProperty(name)) {
                     var method = methods[name];
@@ -140,5 +134,12 @@
             return F;
         }
     };
-    return Root.create();
+    return Root.create({
+        init: function (options) {
+            options = options || {};
+            for(var p in options) {
+                this[p] = options[p];
+            }
+        }
+    });
 });

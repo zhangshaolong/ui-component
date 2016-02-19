@@ -11,9 +11,6 @@ define(function (require) {
     });
 
     var Pager = require('ui').create({
-        init: function () {
-            // TODO  现在如果类里面不写init方法，会出错，稍后处理。
-        },
         bindEvent: function () {
             var me = this;
             this.element.on('click', this.actions.preGroup, function () {
