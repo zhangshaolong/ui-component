@@ -36,7 +36,7 @@ define(function (require, exports) {
         un: function (key, task) {
             if (!key) {
                 this.taskMap = {};
-                return false;
+                return true;
             }
             var taskQueue = this.taskMap[key];
             if (!taskQueue) {
