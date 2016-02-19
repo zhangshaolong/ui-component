@@ -20,14 +20,8 @@
     /**
      * 获取有此方法的最近父类中的方法
      */
-    var callSuper = function (method) {
-        var me = this;
-        return function () {
-            var superMethod = getClosestSuperMethod(me.superClass, method);
-            if (superMethod) {
-                superMethod.apply(me, arguments);
-            }
-        };
+    var getSuper = function (method) {
+        return getClosestSuperMethod(this.superClass, method);
     };
     /**
      * 获取父类中的存在name的最近的父亲的方法
@@ -118,7 +112,7 @@
             if (parent) {
                 F.prototype.superClass = parent;
                 F.prototype.constructor = F;
-                F.prototype.callSuper = callSuper;
+                F.prototype.getSuper = getSuper;
             }
             F.create = Root.create;
             F.init = init;
