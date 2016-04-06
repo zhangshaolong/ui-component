@@ -13,12 +13,29 @@
     <input type="text" class="autocomplete-element" />
 </div>
 
+<div class="dropdown-element" style="width: 200px;"></div>
+
 <button id="aaa">获取值</button>
 <script src="dep/jquery-1.11.3.min.js"></script>
 <script src="dep/simplite.js"></script>
 <script src="dep/bootstrap/js/bootstrap.js"></script>
 <script src="dep/require.js"></script>
 <script>
+    var A = function () {
+        this.a = 1;
+    };
+    A.prototype.b = function () {
+        return 2;
+    };
+    A.init = function (options) {
+        var C = arguments.callee;
+        return new this(options);
+    };
+    var a = A.init({
+        aa: 23
+    });
+    console.log(a);
+
     requirejs.config({
         baseUrl: './',
         paths: {
@@ -51,6 +68,28 @@
         $('#aaa').on('click', function () {
             console.log(autocomplete.getData());
         });
+    });
+
+    require(['widgets/dropdown/dropdown'], function (Dropdown) {
+        var dropdown = Dropdown.init({
+            element: '.dropdown-element'
+        });
+
+        dropdown.render([
+            {
+                id: 12,
+                text: 'name'
+            },
+            {
+                id: 13,
+                text: 'cdde'
+            }
+        ]);
+        dropdown.setVal(13);
+        dropdown.on('change', function (data) {
+            console.log(data, dropdown.getVal());
+
+        })
     });
 </script>
 </body>
