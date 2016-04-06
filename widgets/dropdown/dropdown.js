@@ -21,12 +21,15 @@ define(function (require) {
                 }
             });
         },
-        render: function (data) {
+        render: function (data, val) {
             var html = Simplite.render('dropdown-template', {
                 list: data,
                 defaultText: this.defaultText
             });
             this.element.html(html);
+            if (val != null) {
+                this.setVal(val);
+            }
         },
         setVal: function (id) {
             var me = this;
