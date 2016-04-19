@@ -41,11 +41,40 @@ define(function (require) {
                     }
                     me.render(getDataByKey(me.data, val));
                 }, 30);
-                
             })
 
             .on('click', function (e) {
                 e.stopPropagation();
+            })
+
+            .on('keydown', function (e) {
+                var code = e.keyCode;
+                if (code == 40 || code == 38 || code == 13) {
+                    var activeNode = me.autoConatinerNode.find('.auto-item.active');
+                    if (code == 13) {
+                        activeNode.trigger('click');
+                    }
+                    if (code == 40) {
+                        if (activeNode[0]) {
+                            if (activeNode.next()[0]) {
+                                activeNode.next().addClass('active');
+                                activeNode.removeClass('active');
+                            }
+                        } else {
+                            me.autoConatinerNode.find('.auto-item:eq(0)').addClass('active');
+                        }
+                    }
+                    if (code == 38) {
+                        if (activeNode[0]) {
+                            if (activeNode.prev()[0]) {
+                                activeNode.prev().addClass('active');
+                                activeNode.removeClass('active');
+                            }
+                        } else {
+                            me.autoConatinerNode.find('.auto-item:eq(0)').addClass('active');
+                        }
+                    }
+                }
             })
 
             this.autoConatinerNode.on('click', '.auto-item', function (e) {

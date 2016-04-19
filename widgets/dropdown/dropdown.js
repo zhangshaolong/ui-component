@@ -18,13 +18,17 @@ define(function (require) {
                     $this.addClass('active');
                     me.fire('change', data);
                     me.element.find('.selected-item').data('val', data.id).text(data.text);
+                    if (me.name) {
+                        me.element.find('[name="' + me.name + '"]').val(data.id);
+                    }
                 }
             });
         },
         render: function (data, val) {
             var html = Simplite.render('dropdown-template', {
                 list: data,
-                defaultText: this.defaultText
+                defaultText: this.defaultText,
+                value: this.value
             });
             this.element.html(html);
             if (val != null) {

@@ -14,15 +14,15 @@ define(function (require, exports) {
 
     return require('./class').create({
         init: function () {
-            this.taskMap = {};
+            this.eventMap = {};
         },
         on: function (key, task) {
             if (!key || !task) {
                 return false;
             }
-            var taskQueue = this.taskMap[key];
+            var taskQueue = this.eventMap[key];
             if (!taskQueue) {
-                taskQueue = this.taskMap[key] = [];
+                taskQueue = this.eventMap[key] = [];
             }
             taskQueue.push(task);
             return function () {
@@ -35,10 +35,10 @@ define(function (require, exports) {
         },
         un: function (key, task) {
             if (!key) {
-                this.taskMap = {};
+                this.eventMap = {};
                 return true;
             }
-            var taskQueue = this.taskMap[key];
+            var taskQueue = this.eventMap[key];
             if (!taskQueue) {
                 return false;
             }
@@ -56,13 +56,13 @@ define(function (require, exports) {
             return has;
         },
         fire: function (key) {
-            var taskMap = this.taskMap;
+            var eventMap = this.eventMap;
             var args = slice.call(arguments, 1);
             setTimeout(function () {
                 if (!key) {
                     return false;
                 }
-                var taskQueue = taskMap[key];
+                var taskQueue = eventMap[key];
                 if (!taskQueue) {
                     return false;
                 }
